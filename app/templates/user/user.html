@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <main class="main pad20">
+    <a href="#" class="btn primary users">Users</a>
+  </main>
+{% endblock %}
+
+{% block script %}
+  {{ super() }}
+  <script src="{{url_for('static', filename='js/user.js')}}"></script>
+{% endblock %}

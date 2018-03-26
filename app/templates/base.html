@@ -4,12 +4,33 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
+  <title>{% block title %}Document{% endblock %}</title>
+  <link rel="shortcut icon" href="/static/favicon.ico" />
+  <link rel="icon" href="/static/favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="/static/css/reset.css">
+  <link rel="stylesheet" href="/static/css/base.css">
+  {% block style %}
+  {% endblock %}
 </head>
 <body>
-  <header>
-    <h1>Home</h1>
-    <p>welcome ~, {{name}}</p>
-  </header>
+  {% block header %}
+    <header class="header">
+      <h1>Home</h1>
+      <p>welcome ~, {{name}}</p>
+    </header>
+  {% endblock %}
+    
+  {% block content %}
+    <main class="main pad20">
+      <a href="#" class="btn primary users">Users</a>
+    </main>
+  {% endblock%}
+  
+  {% block footer %}
+  {% endblock%}
+  
+  {% block script %}
+    <script src="{{url_for('static', filename='js/main.js')}}"></script>
+  {% endblock%}
 </body>
 </html>

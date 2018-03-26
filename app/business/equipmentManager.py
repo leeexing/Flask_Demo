@@ -35,19 +35,16 @@ class UserManager():
     def get_users(self, name=None):
         """获取用户"""
         try:
-            print(7777)
             results = None
             if not name:
                 results = list(mongo.db.users.find({}))
-            print(results)
+            # print(results)
             return ResponseHelper.returnTrueJson(marshal(results, UserResourceFields.resource_fields))
         except Exception as ex:
-            print(88888)
             return ResponseHelper.returnFalseJson(msg = str(ex), status = 500)
 
     def insert_users(self, data):
         """添加用户信息"""
-
         try:
             if type(data) == dict:
                 print(data['username'])

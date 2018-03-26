@@ -6,8 +6,8 @@ from flask_cors import CORS
 from app.resources.equipment import Equipments, Users
 from app.conf.config import MySQL_URI, MONGO_URI, MONGO_DB_NAME
 from app.db import MYSQL_DB as db, MONGO_DB as mongo
-from app.router.user import mod_user
-from app.router.index import mod_index
+from app.views.user import mod_user
+from app.views.index import mod_index
 
 
 def create_app():
@@ -26,8 +26,8 @@ def create_app():
     bind_resources(api)
     app.register_blueprint(api_bp, url_prefix='/page')
     # 注册视图
+    app.register_blueprint(mod_index, url_prefix='/home')
     app.register_blueprint(mod_user)
-    app.register_blueprint(mod_index)
     return app
 
 def bind_resources(api):
