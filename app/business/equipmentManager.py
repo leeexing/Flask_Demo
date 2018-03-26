@@ -53,3 +53,9 @@ class UserManager():
             print(88888)
             return ResponseHelper.returnFalseJson(msg = str(ex), status = 500)
 
+    def insert_users(self, data):
+        """添加用户信息"""
+        try:
+            print(6666)
+        except Exception as ex:
+            return ResponseHelper.returnTrueJson(msg=str(ex))

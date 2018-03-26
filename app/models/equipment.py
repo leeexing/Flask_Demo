@@ -1,5 +1,9 @@
+"""
+mysql 数据库查询的时候需要建立 model
+mongo 数据库查询的时候，不需要建立 model， 可以直接写语句进行数据库操作
+"""
 from datetime import datetime
-from app.db import db
+from app.db import MYSQL_DB as db
 
 #Base = declarative_base()  # 创建对象的基类
 
@@ -28,7 +32,7 @@ class User(db.Model):
     # 表的结构
     ID = db.Column(db.Integer, primary_key = True, unique=True, nullable=False)
     username = db.Column(db.String(64), unique = True, index = True)
-    age = db.Column(db.Integer)
+    # age = db.Column(db.Integer)
     password = db.Column(db.String(45))
 
     # def __repr__(self):
