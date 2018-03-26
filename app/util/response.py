@@ -4,9 +4,9 @@ import json
 
 class ResponseHelper:
     @staticmethod
-    def returnTrueJson(data, msg='success'):
+    def returnTrueJson(data, msg='success', status=200):
         return {
-            "result": 100,
+            "result": status,
             "data": data,
             "msg": msg
         }

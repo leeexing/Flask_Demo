@@ -1,4 +1,5 @@
 #-*- coding: utf-8 -*-
+from flask import request
 from flask_restful import Resource
 from flask_restful_swagger import swagger
 from app.common.fields import EquipmentResourceFields, UserResourceFields
@@ -30,3 +31,29 @@ class Users(Resource):
     )
     def get(self):
         return self._users.get_users()
+
+    @swagger.operation(
+        notes = '添加用户数据',
+        nickname = 'post',
+        summary = '添加用户信息',
+        responseClass = UserResourceFields,
+        # required
+        parameters = [{
+            'name': 'body',
+            'description': 'add user ...',
+            'required': True,
+            'allowMultiple': False,
+            'dataType': UserResourceFields.__name__,
+            'paramType': 'body'
+        }],
+        responseMessages = [
+            {'code': 200, 'message': 'new user has saved'},
+            {'code': 400, 'message': 'new user is required'},
+            {'code': 500, 'message': 'JSON format not valid'}
+        ]
+    )
+    def post(self):
+        print('='*30)
+        res = request.get_json()
+        print(res)
+        return self._users.insert_users(res)

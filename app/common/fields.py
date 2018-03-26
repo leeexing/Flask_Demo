@@ -19,8 +19,13 @@ class EquipmentResourceFields:
 
 @swagger.model
 class UserResourceFields:
-    resource_fileds = {
+    resource_fields = {
         'username': fields.String,
-        'age': fields.Integer,
         'password': fields.String
+    }
+
+@swagger.model
+class StatsFileds:
+    resource_fields = {
+        'value': fields.String
     }

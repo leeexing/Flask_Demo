@@ -3,6 +3,7 @@ from app.models.equipment import Equipment, User
 from app.common.fields import EquipmentResourceFields, UserResourceFields
 from app.util.response import ResponseHelper
 from flask_restful import marshal   # marshal 对象序列化和反序列化
+from app.db import MONGO_DB as mongo
 
 
 class EquipmentManager():
@@ -31,31 +32,38 @@ class EquipmentManager():
 class UserManager():
     """用户处理业务类"""
 
-    def get_users(self):
+    def get_users(self, name=None):
         """获取用户"""
         try:
             print(7777)
-            print(User)
-            items = User.query.with_entities(User.username, User.age, User.password).all()
-            print(9999)
-            rets = []
-            for item in items:
-                rets.append({
-                    'username': item.username,
-                    'age': item.age,
-                    'password': item.password
-                })
-            print('='*30)
-            print(rets)
-            print('='*30)
-            return ResponseHelper.returnTrueJson(marshal(rets, UserResourceFields.resource_fileds))
+            results = None
+            if not name:
+                results = list(mongo.db.users.find({}))
+            print(results)
+            return ResponseHelper.returnTrueJson(marshal(results, UserResourceFields.resource_fields))
         except Exception as ex:
             print(88888)
             return ResponseHelper.returnFalseJson(msg = str(ex), status = 500)
 
     def insert_users(self, data):
         """添加用户信息"""
+
         try:
-            print(6666)
+            if type(data) == dict:
+                print(data['username'])
+                user_is_exist = mongo.db.users.find_one({'username': data['username']})
+                print(user_is_exist)
+                print('数据已经存在，不用添加')
+                if not user_is_exist:
+                    mongo.db.users.insert(data)
+            else:
+                for new_user in data:
+                    user_is_exist = mongo.db.users.find_one({'username': data['username']})
+                    if user_is_exist:
+                        continue
+                    mongo.db.user.save(data)
+            results = data
+            results = marshal(results, UserResourceFields.resource_fields) if results else None
+            return ResponseHelper.returnTrueJson(results)
         except Exception as ex:
-            return ResponseHelper.returnTrueJson(msg=str(ex))
+            return ResponseHelper.returnFalseJson(msg=str(ex))
