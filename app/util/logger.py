@@ -22,6 +22,6 @@ def create_logger(name):
         fhandler.setLevel(logging.ERROR)
         fhandler.setFormatter(formatter)
         logger.addHandler(fhandler) # 为文件 logger 添加的日志处理器
-    return logger
 
-# logger.removeHandler(fhandler) # 移除一些日志处理器
+        # logger.removeHandler(fhandler) # 移除一些日志处理器
+    return logger

@@ -19,32 +19,20 @@ mongo.init_app(app)
 CORS(app) # 支持跨域
 socketio = SocketIO(app)
 
-LOGGER = create_logger('WS_TEST')
-THREAD_LOCK = Lock()
-TEST_THREAD = None
-
-def emit_data_to_client():
-    count = 1
-    while True:
-        count += 1
-        socketio.emit('my response', {'data': count}, namespace='/test')
-        socketio.sleep(1)
 
 @socketio.on('connect', namespace='/test')
-def test_connect():
-    print(request.args)
-    emit('my response', {'data': 'Connected', 'count': 0})
-    with THREAD_LOCK:
-        global TEST_THREAD
-        if not TEST_THREAD:
-            print(TEST_THREAD)
-            TEST_THREAD = socketio.start_background_task(emit_data_to_client)
-
-@socketio.on('my event', namespace='/test')
-def test_message(message):
-    emit('my response', {'data': message['data'], 'count': 2})
+def connect():
+    """test 连接"""
+    from ws.ws_test import test_connect
+    test_connect()
 
 @socketio.on('disconnect', namespace='/test')
-def test_disconnect():
-    LOGGER.info('disconnect from test ws !')
-    disconnect()
+def disconnect():
+    """test 断开连接"""
+    from ws.ws_test import test_disconnect
+    test_disconnect()
+
+@socketio.on('test message', namespace='/test')
+def test_message(msg):
+    """test 发送消息"""
+    emit('my response', {'data': msg['data']})

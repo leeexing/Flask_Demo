@@ -4,7 +4,7 @@ $(() => {
   const socket_wrap = document.querySelector('.socket-wrap')
 
   // 如果url后面接？username=leeing 这样的话，后面的query字段会被忽略掉
-  let socket = io.connect('http://localhost:5006/test', {query: "test_id=lee0712&age=23", transports:['websocket'], timeout:30000})
+  let socket = io.connect('http://localhost:5006/test', {query: "client_name=leeing_0712&age=23", transports:['websocket'], timeout:30000})
   socket.on('connect', () => {
     console.log('*'.repeat(20))
     socket.emit('my event', {data: `I'm connected!`})

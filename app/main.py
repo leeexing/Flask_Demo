@@ -45,4 +45,4 @@ def bind_resources(api):
     from app.resources.equipment import Todo,TodoStat
     api.add_resource(Todos, '/todos', endpoint = 'todos')
     api.add_resource(Todo, '/todo', endpoint = 'todo')
-    api.add_resource(TodoStat, '/todo/<string:status>', endpoint = 'todostat')
+    api.add_resource(TodoStat, '/todo/<int:status>', endpoint = 'todostat')
