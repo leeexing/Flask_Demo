@@ -152,8 +152,9 @@ class Todo(Resource):
         responseClass = StatsFields
     )
     def delete(self):
-        data = request.get_json()
-        return self._todos.delete_todo(data)
+        title = request.form.get('title', None)
+        print(request.form)
+        return self._todos.delete_todo(title)
 
 class TodoStat(Resource):
 

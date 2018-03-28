@@ -19,7 +19,7 @@ function query(url, method='get', data=null){
       reject(e)
     }
     // post 请求的数据需要格式化，不能直接传递 object 对象
-    if (method === 'post' && data) {
+    if (method !== 'get' && data) {
       data = postDataFormat(data)
       if (typeof FormData !== 'function') {
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')

@@ -42,7 +42,7 @@
         </div>
       </div>
       <ul>
-        <li class="item">
+        <li class="item item-title">
           <span>状态</span>
           <span>名称</span>
           <span>创建时间</span>
@@ -50,7 +50,7 @@
         </li>
         {% for item in todos%}
           <li class="item">
-            <input type="checkbox" checked="{{ item.finished }}">
+            <input type="checkbox" {% if item.status %} {{ 'checked' }} {% endif %}>
             <span class="title">{{ item.title }}</span>
             <time>{{ item.create_time }}</time>
             {% if item.finished %}
