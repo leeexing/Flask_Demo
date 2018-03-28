@@ -16,6 +16,10 @@ def index():
 def ws():
     return render_template('home/websocket.html', name='Socket')
 
+@mod_index.route('/socket')
+def socket():
+    return render_template('home/websocket.html', name='Socket')
+
 @mod_index.route('/about')
 def about():
     abort(404)

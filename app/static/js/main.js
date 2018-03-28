@@ -18,6 +18,29 @@ function query(url, method='get', data=null){
     xhr.onerror = function(e) {
       reject(e)
     }
+    // post 请求的数据需要格式化，不能直接传递 object 对象
+    if (method === 'post' && data) {
+      data = postDataFormat(data)
+      if (typeof FormData !== 'function') {
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
+      }
+    }
     xhr.send(data)
   })
+}
+
+function postDataFormat(obj) {
+  if (typeof FormData === 'function') {
+    let formData = new FormData()
+    Object.keys(obj).forEach(key => {
+      formData.append(key, obj[key])
+    })
+    return formData
+  } else {
+    let arr = []
+    Object.keys(obj).forEach(key => {
+      arr.push(`${encodeURIComponent(key)}=${encodeURIComponent(obj[key])}`)
+    })
+    return arr.join('&')
+  }
 }

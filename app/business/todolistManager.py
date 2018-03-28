@@ -20,22 +20,23 @@ class TodolistManager():
         except Exception as ex:
             return ResponseHelper.returnFalseJson(msg = str(ex), status = 500)
 
-    def insert_todo(self, data):
+    def insert_todo(self, title):
         """添加待办事项"""
         try:
-            if type(data) == dict:
-                data['create_time'] = datetime.now()
-                is_exist = mongo.db.todo.find_one({'title': data['title']})
-                print(54654)
-                print(data['title'])
-                print(is_exist)
+            if title:
+                data = {}
+                is_exist = mongo.db.todo.find_one({'title': title})
                 if not is_exist:
+                    data['title'] = title
+                    data['create_time'] = datetime.now()
+                    data['status'] = False
                     mongo.db.todo.insert(data)
+                    results = data
+                    results = marshal(results, TodoResourceFileds.resource_fields) if results else None
+                    return ResponseHelper.returnTrueJson(results)
                 else:
                     print('数据已经存在，不用添加')
-                results = data
-                results = marshal(results, TodoResourceFileds.resource_fields) if results else None
-                return ResponseHelper.returnTrueJson(results)
+                    return ResponseHelper.returnTrueJson(msg='待办事项名称已存在', data=None)
         except Exception as ex:
             return ResponseHelper.returnFalseJson(msg=str(ex))
 

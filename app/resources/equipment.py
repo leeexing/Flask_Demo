@@ -130,11 +130,10 @@ class Todo(Resource):
         ]
     )
     def post(self):
-        print('='*30)
-        data = request.get_json()
-        print(request.form.get('title'))
-        print(data)
-        return self._todos.insert_todo(data)
+        print('='*15 + '传递参数' + '='*15)
+        print(request.form)
+        title = request.form.get('title', None)
+        return self._todos.insert_todo(title)
 
     @swagger.operation(
         notes = '更新待办事项',
