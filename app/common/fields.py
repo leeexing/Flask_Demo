@@ -23,9 +23,23 @@ class UserResourceFields:
         'username': fields.String,
         'password': fields.String
     }
+    def __init__(self, arg1, arg2, arg3='123'):
+        pass
+
+class ClockItem(fields.Raw):
+    def format(self, value):
+        return value.strftime("%Y-%m-%d %H:%M:%S")
 
 @swagger.model
-class StatsFileds:
+class TodoResourceFileds:
     resource_fields = {
-        'value': fields.String
+        'title': fields.String,
+        'status': fields.Boolean,
+        'create_time': ClockItem
+    }
+
+@swagger.model
+class StatsFields:
+    resource_fields = {
+        'title': fields.String
     }

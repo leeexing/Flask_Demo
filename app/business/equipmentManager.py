@@ -32,13 +32,20 @@ class EquipmentManager():
 class UserManager():
     """用户处理业务类"""
 
-    def get_users(self, name=None):
-        """获取用户"""
+    def get_users(self):
+        """获取所有用户"""
         try:
-            results = None
-            if not name:
-                results = list(mongo.db.users.find({}))
-            # print(results)
+            results = list(mongo.db.users.find({}))
+            print(results)
+            return ResponseHelper.returnTrueJson(marshal(results, UserResourceFields.resource_fields))
+        except Exception as ex:
+            return ResponseHelper.returnFalseJson(msg = str(ex), status = 500)
+
+    def get_user(self, user_name):
+        """获取具体用户信息"""
+        try:
+            results = list(mongo.db.users.find({'username': user_name}))
+            print(results)
             return ResponseHelper.returnTrueJson(marshal(results, UserResourceFields.resource_fields))
         except Exception as ex:
             return ResponseHelper.returnFalseJson(msg = str(ex), status = 500)
@@ -50,9 +57,10 @@ class UserManager():
                 print(data['username'])
                 user_is_exist = mongo.db.users.find_one({'username': data['username']})
                 print(user_is_exist)
-                print('数据已经存在，不用添加')
                 if not user_is_exist:
                     mongo.db.users.insert(data)
+                else:
+                    print('数据已经存在，不用添加')
             else:
                 for new_user in data:
                     user_is_exist = mongo.db.users.find_one({'username': data['username']})

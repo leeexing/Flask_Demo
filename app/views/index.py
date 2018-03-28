@@ -12,6 +12,10 @@ mod_index = Blueprint('home', __name__,
 def index():
     return render_template('base.html', name='Leeing')
 
+@mod_index.route('/ws')
+def ws():
+    return render_template('home/websocket.html', name='Socket')
+
 @mod_index.route('/about')
 def about():
     abort(404)

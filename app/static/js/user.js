@@ -6,26 +6,21 @@ console.log('地址：http://localhost:5002/page/users')
 console.groupEnd()
 
 const user_btn = document.querySelector('.users')
+const user_wrap = document.querySelector('.user-wrap')
 
 user_btn.onclick = e => {
   query('http://localhost:5002/page/users')
     .then(data => {
       console.log(data)
+      showUsers(data)
     })
 }
 
-function query(url, method='get', data=null){
-  return new Promise((resolve, reject) => {
-    let xhr = new XMLHttpRequest()
-    xhr.open(method, url, true)
-    xhr.onload = function() {
-      if (this.status === 200) {
-        resolve(this.response)
-      }
-    }
-    xhr.onerror = function(e) {
-      reject(e)
-    }
-    xhr.send(data)
+function showUsers(data) {
+  let html = '<ul>'
+  data.data.forEach(item => {
+    html += `<li>用户名：${item.username}, 密码：${item.password}</li>`
   })
+  html += '</ul>'
+  user_wrap.innerHTML = html
 }

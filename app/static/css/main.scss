@@ -1,0 +1,27 @@
+.todo {
+  > div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 0 15px;
+    // border-bottom: 1px solid salmon;
+    input {
+      width: 50%;
+    }
+    .opr {
+      padding-left: 20px;
+    }
+  }
+  .item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 5px;
+    &:first-child {
+      background: #999;
+      color: #eee;
+      font-size: 16px;
+      border-radius: 4px;
+    }
+  }
+}
