@@ -20,6 +20,8 @@ CORS(app) # 支持跨域
 socketio = SocketIO(app)
 
 
+###################### WS_TEST ############################
+
 @socketio.on('connect', namespace='/test')
 def connect():
     """test 连接"""
@@ -36,3 +38,23 @@ def disconnect():
 def test_message(msg):
     """test 发送消息"""
     emit('my response', {'data': msg['data']})
+
+
+####################### SLIP_RING ##########################
+
+@socketio.on('connect', namespace='/SLIP_RING')
+def connect():
+    """test 连接"""
+    from ws.slip_ring import slipring_connect
+    slipring_connect()
+
+@socketio.on('disconnect', namespace='/SLIP_RING')
+def disconnect():
+    """test 断开连接"""
+    from ws.slip_ring import slipring_disconnect
+    slipring_disconnect()
+
+@socketio.on('server_response', namespace='/SLIP_RING')
+def test_message(msg):
+    """test 发送消息"""
+    emit('server_response', {'data': msg['data']})
