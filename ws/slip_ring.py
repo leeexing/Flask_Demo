@@ -7,6 +7,7 @@ from flask_socketio import disconnect, join_room, leave_room, rooms, emit
 from app.util.logger import create_logger
 from app.util.connector import get_redis_connection
 from ws.main import socketio
+import json
 
 TEST_ROOM = {}
 THREAD_LOCK = Lock()
@@ -17,10 +18,12 @@ R= get_redis_connection()
 
 
 def emit_data_to_client():
-    count = 1
+    """从redis数据库中实时查询数据并返回"""
     while True:
-        count += 1
-        socketio.emit('server_response', {'data': count}, namespace='/SLIP_RING')
+        if R.hexists('leeing:slip', 'todo'):
+            data = json.loads(R.hget('leeing:slip', 'todo'))
+            # print(type(data))
+        socketio.emit('server_response', data, namespace='/SLIP_RING')
         socketio.sleep(1)
 
 def slipring_connect():
@@ -28,7 +31,7 @@ def slipring_connect():
     LOGGER.info('%s connected in SLIP_RING' % request.sid) # 前端页面发起请求的唯一id | 全局请求上下文( request context global)通过增加sid来支持为链接设置独一无二的session id。这个值在第一个用户进入房间是被使用。
     print('^'*40)
     print(request.args)
-    client_name = request.args.get('eqp_id', None)
+    client_name = request.args.get('client_name', None)
     if not client_name:
         disconnect()
     join_room(client_name, namespace='/SLIP_RING')

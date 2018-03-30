@@ -54,7 +54,7 @@ def disconnect():
     from ws.slip_ring import slipring_disconnect
     slipring_disconnect()
 
-@socketio.on('server_response', namespace='/SLIP_RING')
+@socketio.on('client_response', namespace='/SLIP_RING')
 def test_message(msg):
     """test 发送消息"""
     emit('server_response', {'data': msg['data']})

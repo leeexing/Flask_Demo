@@ -14,8 +14,7 @@ class SlipRingManager():
     def get_speed(self, eqp_id, args=None):
         """获取滑环转速"""
         try:
-            
-start_time = args.start_time if args.start_time else datetime.now() - timedelta(days=1)
+            start_time = args.start_time if args.start_time else datetime.now() - timedelta(days=1)
             end_time = args.end_time if args.end_time else datetime.now()
             result = list(mongo.db.slipring.find({
                 'eqp_id': eqp_id,

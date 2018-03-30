@@ -20,6 +20,10 @@ def ws():
 def socket():
     return render_template('home/websocket.html', name='Socket')
 
+@mod_index.route('/slip')
+def slip_ring():
+    return render_template('slipRing/slipRing.html', name='Socket')
+
 @mod_index.route('/about')
 def about():
     abort(404)
