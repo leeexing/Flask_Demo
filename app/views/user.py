@@ -8,7 +8,7 @@ from flask import Blueprint, render_template
 from jinja2 import TemplateNotFound
 
 mod_user = Blueprint('user', __name__,
-                        template_folder='templates')
+                            template_folder='templates')
 
 @mod_user.route('/user/home/')
 def home():

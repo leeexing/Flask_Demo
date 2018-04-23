@@ -28,6 +28,8 @@ def slip_ring():
 def about():
     abort(404)
 
-@mod_index.errorhandler(404)
+# errorhandler对该blueprint有效，但是需要注意的是404是不会被路又道blueprint的，出非404是在blueprint的view函数里面的abort的。建议使用 app_errorhandler
+# @mod_index.errorhandler(404)  
+@mod_index.app_errorhandler(404)
 def page_not_found(e):
     return render_template('404.html')
