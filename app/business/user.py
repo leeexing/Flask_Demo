@@ -9,6 +9,7 @@ from app.models.user import User, EnumUserType
 from app.util.response import ResponseHelper
 from app.util.logger import create_logger
 from app.util.image_storage import storage
+from app.conf.instance import QINIU_DOMAIN_PREFIX
 from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identity, jwt_optional, get_jwt_claims
 import re
 
@@ -211,22 +212,38 @@ class UserManager:
         except Exception as e:
             self.logger.error('服务器错误：', str(e))
             return ResponseHelper.return_false_data(msg='七牛云图片上传失败', status=200)
-        avatar_url = 
-        if 1 == user_type:
-            user_info = request.get_json()
-            if noe user_info:
-                return ResponseHelper.return_false_data(msg='参数错误', status=200)
-            user_id = user_info.get('user_id')
-            user_type = user_info.get('user_type')
-            if not all([user_id, user_type]):
-                return ResponseHelper.return_false_data(msg='参数不完整', status=200)
+        avatar_url = QINIU_DOMAIN_PREFIX + image_name
+        try:
+            User.query.filter_by(UserName=user_name).update({'AvatarUrl': avatar_url})
+            db.session.commit()
+        except Exception as e:
+            self.logger.error('服务器错误：', str(e))
+            db.session.rollback()
+            return ResponseHelper.return_false_data(msg='用户头像保存失败', 200)
+        return ResponseHelper.return_true_data(avatar_url)
+
+    @jwt_optional
+    def user_menu(self):
+        """用户菜单"""
+
+        cur = {
+            'current_identity': get_jwt_identity(),
+            'current_type': get_jwt_claims()
+        }
+        if not cur['current_identity']:
+            return ResponseHelper.return_false_data(msg='请登录', status=200)
+        user_type = cur.get('current_type')
+        if user_type:
             try:
-                User.query.filter_by(ID=user_id).update({'UserType': EnumUserType(user_type)})
-                db.session.commit()
+                menus = Menuconfig.query.filter_by(UserType=EnumUserType(user_type)).all()
             except Exception as e:
                 self.logger.error('服务器错误：', str(e))
-                db.session.rollback()
-                return ResponseHelper.return_false_data(msg='Server Error', status=500)
-            return ResponseHelper.return_true_data('用户类型修改成功')
+                return ResponseHelper.return_false_data(msg='Server Error', 500)
+            if menus:
+                menu_list = [dict(menuname=menu.Menu.Name, menuurl=menu.Menu.Url,
+                                menupid=menu.Menu.Pid) for menu in menus]
+                return ResponseHelper.return_true_data(menu_list)
+            else:
+                return ResponseHelper.return_false_data(msg='请添加菜单', status=200)
         else:
-            return ResponseHelper.return_false_data(msg='权限不足', status=200)
+            return ResponseHelper.return_false_data(msg='请添加角色', status=200)

@@ -9,6 +9,7 @@ class Menu(db.Model):
 
     ID = db.Column(db.Integer, primary_key=True, unique=True, nullable=False)
     Name = db.Column(db.String(32), nullable=False)
+    Pid = db.Column(db.Integer)
     Url = db.Column(db.String(50))
     Order = db.Column(db.Integer)
     CreateTime = db.Column(db.DateTime, default=datetime.now, nullable=False)
