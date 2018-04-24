@@ -3,13 +3,10 @@
 
 import logging
 from qiniu import Auth, put_data, put_file
+from app.conf.instance import ACCESS_KEY, SECRET_KEY, BUCKET_NAME
 
 # 需要填写你的 Access Key 和 Secret Key
-ACCESS_KEY = 'q6QLur7zYpyj9rUAeUwkKA3g2BxiGRugfevdqW7r'
-SECRET_KEY = 'l8AfWuWW4DfK1TrZyPzUsXc8WKa_YojUgCUG040u'
-
-#要上传的空间
-BUCKET_NAME = 'python'
+# 要上传的空间: BUCKET_NAME
 
 # 测试图片上传文件
 TEST_IAMGE_FILE = r'E:/Leeing/python/python/show-me-code/_assets/images/weixin_avatar3.png'
