@@ -93,4 +93,140 @@ class UserManager:
             return ResponseHelper.return_false_data(msg='Server Error', status=500)
         if not user or not user.check_password(password):
             return ResponseHelper.return_false_data(msg='用户名或密码错误', status=200)
+        user_type = user.UserType.value
+        user_id = user.ID
+        name = user.Name
+        user_avatar = user.AvatarUrl
+        user_obj = UserObject(userid=user_id, username=user_name, usertype=user_type)
+        access_token = create_access_token(identity=user_obj)
+        res_data = {
+            'accessToken': access_token,
+            'userName': user_name,
+            'userID': user_id,
+            'name': name,
+            'userAvatar': user_avatar,
+            'expiresIn': 24*60
+        }
+        return ResponseHelper.return_true_data(res_data)
         
+    @jwt_optional
+    def user_query(self, id):
+        """用户查询"""
+
+        cur = {
+            'current_identity': get_jwt_identity(),
+            'current_type': get_jwt_claims()
+        }
+        if not cur['current_identity']:
+            return ResponseHelper.return_false_data(msg='请登录', status=200)
+        user_type = cur.get('current_type')
+        if 1 == user_type:
+            try:
+                user = User.query.filter_by(ID=int(id)).first()
+            except Exception as e:
+                self.logger.error('服务器错误：', str(e))
+                return ResponseHelper.return_false_data(msg='Server Error', status=500)
+            if user:
+                user_data = {
+                    'id': user.ID,
+                    'username': user.UserName,
+                    'name': user.Name,
+                    'usertype': user.UserType
+                }
+                return ResponseHelper.return_true_data(user_data)
+        else:
+            return ResponseHelper.return_false_data(msg='权限不足', status=200)
+
+    @jwt_optional
+    def users_query(self):
+        """用户列表查询"""
+
+        cur = {
+            'current_identity': get_jwt_identity(),
+            'current_type': get_jwt_claims()
+        }
+        if not cur['current_identity']:
+            return ResponseHelper.return_false_data(msg='请登录', status=200)
+        user_type = cur.get('current_type')
+        if 1 == user_type:
+            try:
+                users = User.query.all()
+            except Exception as e:
+                self.logger.error('服务器错误：', str(e))
+                return ResponseHelper.return_false_data(msg='Server Error', status=500)
+            if users:
+                users_list = [dict(userid=user.ID, username=user.UserName,
+                                    name=user.Name, usertype=user.UserType) for user in users]
+                return ResponseHelper.return_true_data(users_list)
+        else:
+            return ResponseHelper.return_false_data(msg='权限不足', status=200)
+
+    @jwt_optional
+    def user_type_upd(self):
+        """用户类型修改"""
+
+        cur = {
+            'current_identity': get_jwt_identity(),
+            'current_type': get_jwt_claims()
+        }
+        if not cur['current_identity']:
+            return ResponseHelper.return_false_data(msg='请登录', status=200)
+        user_type = cur.get('current_type')
+        if 1 == user_type:
+            user_info = request.get_json()
+            if noe user_info:
+                return ResponseHelper.return_false_data(msg='参数错误', status=200)
+            user_id = user_info.get('user_id')
+            user_type = user_info.get('user_type')
+            if not all([user_id, user_type]):
+                return ResponseHelper.return_false_data(msg='参数不完整', status=200)
+            try:
+                User.query.filter_by(ID=user_id).update({'UserType': EnumUserType(user_type)})
+                db.session.commit()
+            except Exception as e:
+                self.logger.error('服务器错误：', str(e))
+                db.session.rollback()
+                return ResponseHelper.return_false_data(msg='Server Error', status=500)
+            return ResponseHelper.return_true_data('用户类型修改成功')
+        else:
+            return ResponseHelper.return_false_data(msg='权限不足', status=200)
+
+    @jwt_optional
+    def set_user_avatar():
+        """用户头像上传"""
+
+        cur = {
+            'current_identity': get_jwt_identity(),
+            'current_type': get_jwt_claims()
+        }
+        if not cur['current_identity']:
+            return ResponseHelper.return_false_data(msg='请登录', status=200)
+        user_name = cur.get('current_identity')[1]
+        avatar = request.files.get('avatar')
+        if not avatar:
+            return ResponseHelper.return_false_data(msg='图像未上传', status=200)
+        avatar_data = avatar.read()
+        try:
+            image_name = storage(avatar_data)
+        except Exception as e:
+            self.logger.error('服务器错误：', str(e))
+            return ResponseHelper.return_false_data(msg='七牛云图片上传失败', status=200)
+        avatar_url = 
+        if 1 == user_type:
+            user_info = request.get_json()
+            if noe user_info:
+                return ResponseHelper.return_false_data(msg='参数错误', status=200)
+            user_id = user_info.get('user_id')
+            user_type = user_info.get('user_type')
+            if not all([user_id, user_type]):
+                return ResponseHelper.return_false_data(msg='参数不完整', status=200)
+            try:
+                User.query.filter_by(ID=user_id).update({'UserType': EnumUserType(user_type)})
+                db.session.commit()
+            except Exception as e:
+                self.logger.error('服务器错误：', str(e))
+                db.session.rollback()
+                return ResponseHelper.return_false_data(msg='Server Error', status=500)
+            return ResponseHelper.return_true_data('用户类型修改成功')
+        else:
+            return ResponseHelper.return_false_data(msg='权限不足', status=200)

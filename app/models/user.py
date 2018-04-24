@@ -18,6 +18,7 @@ class User(db.Model):
     Name = db.Column(db.String(32))
     UserType = db.Column(db.Enum(EnumUserType))
     CreatorId = db.Column(db.String(128))
+    AvatarUrl = db.Column(db.String(128))
     CreateTime = db.Column(db.DateTime, nullable=False, default=datetime.now)
     ModifyTime = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
 
