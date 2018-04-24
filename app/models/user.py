@@ -15,7 +15,9 @@ class User(db.Model):
     ID = db.Column(db.Integer, primary_key=True, unique=True, nullable=False)
     UserName = db.Column(db.String(32), unique=True, nullable=False)
     Password = db.Column(db.String(128), nullable=False)
+    Name = db.Column(db.String(32))
     UserType = db.Column(db.Enum(EnumUserType))
+    CreatorId = db.Column(db.String(128))
     CreateTime = db.Column(db.DateTime, nullable=False, default=datetime.now)
     ModifyTime = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
 
