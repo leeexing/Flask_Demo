@@ -3,17 +3,14 @@
 from flask import Flask, request
 from flask_socketio import SocketIO, emit, disconnect
 from flask_cors import CORS
-from app.conf.config import MySQL_URI, MONGO_DB_NAME, MONGO_URI
-from app.db import MYSQL_DB as db, MONGO_DB as mongo
 from threading import Lock
+from app.conf.config import DevConfig
+from app.db import MYSQL_DB as db, MONGO_DB as mongo
 from app.util.logger import create_logger
 
 app = Flask('FLASK_WS')
-app.config['SECRET_KEY'] = 'secret_leeing'
-app.config['SQLALCHEMY_DATABASE_URI'] = MySQL_URI
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['MONGO_DBNAME'] = MONGO_DB_NAME
-app.config['MONGO_URL'] = MONGO_URI
+app.config.from_object(DevConfig)
+
 db.init_app(app)
 mongo.init_app(app)
 CORS(app) # 支持跨域

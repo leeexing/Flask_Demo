@@ -6,6 +6,7 @@ class Config(object):
     """基本"""
 
     DEBUG = False
+    SECRET_KEY = 'secret-key'   # change this !
 
     REDIS_URI = 'localhost'
     REDIS_PORT = 6379
@@ -19,6 +20,7 @@ class DevConfig(Config):
     """开发"""
 
     DEBUG = True
+    SECRET_KEY = 'secret-key-leeing'
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False  # 是否开启跟踪   # 每次请求结束都会自动提交事务
     SQLALCHEMY_DATABASE_URI = 'mysql+mysqlconnector://root:123456@localhost/flask'

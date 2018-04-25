@@ -12,7 +12,7 @@ import app.views as views
 def create_app():
     """创建App"""
     app = Flask(__name__)
-    app.config.from_object(DevConfig)
+    app.config.from_object(DevConfig) # 初始化配置项
 
     jwt = JWTManager(app)
 
@@ -38,7 +38,7 @@ def create_app():
     CORS(app)           # 跨域支持
     api_bp = Blueprint('api', __name__)
     api = swagger.docs(Api(api_bp), apiVersion='0.1', resourcePath='/',
-                                    description='EMDP_API', api_spec_url='/swagger') # swagger支持
+                       description='EMDP_API', api_spec_url='/swagger') # swagger支持
     bind_resources(api)
     app.register_blueprint(api_bp, url_prefix='/api')
 
