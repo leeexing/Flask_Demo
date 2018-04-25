@@ -2,30 +2,28 @@
 """项目总体配置"""
 from datetime import timedelta
 
-REDIS_URI = 'localhost'
-REDIS_PORT = 6379
-
 class Config(object):
     """基本"""
 
     DEBUG = False
 
+    REDIS_URI = 'localhost'
+    REDIS_PORT = 6379
+
 class ProdConfig(Config):
     """生产"""
 
-    MONGO_URI = 'mongodb://10.13.62.202:27017'
-    MONGO_DB_NAME = 'SITS'
+    MONGO_URI = 'mongodb://10.13.62.202:27017/NSTS'
 
 class DevConfig(Config):
     """开发"""
 
     DEBUG = True
+
     SQLALCHEMY_TRACK_MODIFICATIONS = False  # 是否开启跟踪   # 每次请求结束都会自动提交事务
+    SQLALCHEMY_DATABASE_URI = 'mysql+mysqlconnector://root:123456@localhost/flask'
 
-    MySQL_URI = 'mysql+mysqlconnector://root:123456@localhost/flask'
-
-    MONGO_URI = 'mongodb://localhost:27017'
-    MONGO_DB_NAME = 'myblog'
+    MONGO_URI = 'mongodb://localhost:27017/myblog'
 
     JWT_SECRET_KEY = 'super-secret-key'
     JWT_ACCESS_TOKEN_EXPIRES = timedelta(minutes=24*60)

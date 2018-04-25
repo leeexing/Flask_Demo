@@ -2,11 +2,11 @@
 """数据库连接器"""
 from redis import StrictRedis
 from pymongo import MongoClient
-from app.conf.config import Redis_Port, Redis_URI, MONGO_URI
+from app.conf.config import Redis_Port, Redis_URI, DevConfig
 
 def get_mongo_connection():
     """Mongodb连接器"""
-    return MongoClient(host=MONGO_URI)
+    return MongoClient(host=DevConfig.MONGO_URI)
 
 def get_redis_connection():
     """Redis连接器"""
