@@ -175,7 +175,7 @@ class UserManager:
         user_type = cur.get('current_type')
         if 1 == user_type:
             user_info = request.get_json()
-            if noe user_info:
+            if not user_info:
                 return ResponseHelper.return_false_data(msg='参数错误', status=200)
             user_id = user_info.get('user_id')
             user_type = user_info.get('user_type')
@@ -219,7 +219,7 @@ class UserManager:
         except Exception as e:
             self.logger.error('服务器错误：', str(e))
             db.session.rollback()
-            return ResponseHelper.return_false_data(msg='用户头像保存失败', 200)
+            return ResponseHelper.return_false_data(msg='用户头像保存失败', status=200)
         return ResponseHelper.return_true_data(avatar_url)
 
     @jwt_optional
@@ -238,7 +238,7 @@ class UserManager:
                 menus = Menuconfig.query.filter_by(UserType=EnumUserType(user_type)).all()
             except Exception as e:
                 self.logger.error('服务器错误：', str(e))
-                return ResponseHelper.return_false_data(msg='Server Error', 500)
+                return ResponseHelper.return_false_data(msg='Server Error', status=500)
             if menus:
                 menu_list = [dict(menuname=menu.Menu.Name, menuurl=menu.Menu.Url,
                                 menupid=menu.Menu.Pid) for menu in menus]

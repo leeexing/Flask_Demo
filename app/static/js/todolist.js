@@ -10,16 +10,16 @@ $(() => {
   const socket_wrap = document.querySelector('.socket')
 
   // 如果url后面接？username=leeing 这样的话，后面的query字段会被忽略掉
-  let socket = io.connect('http://localhost:5006/test', {query: "client_name=kobe_2018&age=24", transports:['websocket']})
-  socket.on('connect', () => {
-    console.log('*'.repeat(20))
-    socket.emit('my event', {data: `I'm connected!`})
-  })
+  // let socket = io.connect('http://localhost:5006/test', {query: "client_name=kobe_2018&age=24", transports:['websocket']})
+  // socket.on('connect', () => {
+  //   console.log('*'.repeat(20))
+  //   socket.emit('my event', {data: `I'm connected!`})
+  // })
 
-  socket.on('my response', msg => {
-    console.log(msg)
-    socket_wrap.innerHTML = `<h1>连接次数：${msg.data}</h1>`
-  })
+  // socket.on('my response', msg => {
+  //   console.log(msg)
+  //   socket_wrap.innerHTML = `<h1>连接次数：${msg.data}</h1>`
+  // })
 
   // 添加数据
   let $input = $('.add')

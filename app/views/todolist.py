@@ -2,8 +2,7 @@
 """
 TODO_LIST 视图
 """
-from flask import Blueprint, render_template, abort
-from jinja2 import TemplateNotFound
+from flask import Blueprint, render_template
 from app.db import MONGO_DB as mongo
 
 todolist_bp = Blueprint('todolist', __name__)

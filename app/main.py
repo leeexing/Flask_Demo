@@ -62,13 +62,19 @@ def bind_views(app):
 def bind_resources(api):
     """绑定对应资源"""
 
-    from app.resources.equipment import Equipments, Users, User, Todos
-    api.add_resource(Equipments, '/equipments',endpoint='equipments')
-    api.add_resource(Users, '/users', endpoint = 'users')
-    api.add_resource(User, '/user', endpoint = 'user')
+    from app.resources.equipment import Equipments
+    api.add_resource(Equipments, '/equipments', endpoint='equipments')
 
     # TODO_List
-    from app.resources.equipment import Todo, TodoStat
-    api.add_resource(Todos, '/todos', endpoint = 'todos')
-    api.add_resource(Todo, '/todo', endpoint = 'todo')
-    api.add_resource(TodoStat, '/todo/<int:status>', endpoint = 'todostat')
+    from app.resources.todolist import Todo, Todos, TodoStat
+    api.add_resource(Todos, '/todos', endpoint='todos')
+    api.add_resource(Todo, '/todo', endpoint='todo')
+    api.add_resource(TodoStat, '/todo/<int:status>', endpoint='todostat')
+
+    # 用户注册
+    from app.resources.user import Register, Login, UserQuery, UsersQuery, SetUserAvatar
+    api.add_resource(Register, '/user/register')
+    api.add_resource(Login, '/user/login')
+    api.add_resource(UsersQuery, '/users')
+    api.add_resource(UserQuery, '/users/<string:id>')
+    api.add_resource(SetUserAvatar, '/user/setavatar')

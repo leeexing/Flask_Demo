@@ -28,9 +28,9 @@ def storage(data):
         print(ret)
         print(info)
 
-    except Exception as e:
-        logging.error(e)
-        raise e
+    except Exception as ex:
+        logging.error(ex)
+        raise ex
     if info and info.status_code != 200:
         raise Exception('上传文件到七牛失败')
 
@@ -39,7 +39,7 @@ def storage(data):
 
 def storage_by_file():
     """通过文件上传"""
-    
+
     # #构建鉴权对象
     q = Auth(ACCESS_KEY, SECRET_KEY)
     #上传到七牛后保存的文件名
@@ -54,7 +54,7 @@ def storage_by_file():
     return ret['key']
 
 def main():
-    with open(, 'rb') as f:
+    with open(TEST_IAMGE_FILE, 'rb') as f:
         data = f.read()
         url = storage(data)
         print(url)

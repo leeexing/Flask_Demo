@@ -65,7 +65,7 @@ class TodolistManager():
         """获取完成/未完成的待办事项"""
         try:
             status = True if status == 1 else False
-            results = list(mongo.db.todo.find({'status': status}))
+            results = list(mongo.db.todo.find({'status': status}).limit(10))
             print(results)
             results = marshal(results, TodoResourceFileds.resource_fields) if results else None
             return ResponseHelper.return_true_data(results)

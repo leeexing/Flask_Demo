@@ -17,15 +17,6 @@ class EquipmentResourceFields:
         'Location': fields.String
     }
 
-@swagger.model
-class UserResourceFields:
-    resource_fields = {
-        'username': fields.String,
-        'password': fields.String
-    }
-    def __init__(self, arg1, arg2, arg3='123'):
-        pass
-
 class ClockItem(fields.Raw):
     def format(self, value):
         return value.strftime("%Y-%m-%d %H:%M:%S")
@@ -44,7 +35,7 @@ class StatsFields:
         'title': fields.String
     }
 
-############### 用户相关 #############
+# ------------ users ------------
 
 @swagger.model
 class Register_Fileds:

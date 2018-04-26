@@ -24,4 +24,4 @@ class Menuconfig(db.Model):
     MenuID = db.Column(db.Integer, db.ForeignKey('menu.ID'), nullable=False)
     UserType = db.Column(db.Enum(EnumUserType))
     CreateTime = db.Column(db.DateTime, nullable=False, default=datetime.now)
-    ModifyTime = db.Column(db.DateTime, defaule=datetime.now, onupdate=datetime.now)
+    ModifyTime = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
