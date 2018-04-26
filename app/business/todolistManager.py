@@ -16,9 +16,9 @@ class TodolistManager():
             if not name:
                 results = list(mongo.db.todo.find({}))
             # print(results)
-            return ResponseHelper.returnTrueJson(marshal(results, TodoResourceFileds.resource_fields))
+            return ResponseHelper.return_true_data(marshal(results, TodoResourceFileds.resource_fields))
         except Exception as ex:
-            return ResponseHelper.returnFalseJson(msg = str(ex), status = 500)
+            return ResponseHelper.return_false_data(msg = str(ex), status = 500)
 
     def insert_todo(self, title):
         """添加待办事项"""
@@ -34,32 +34,32 @@ class TodolistManager():
                     mongo.db.todo.insert(data)
                     results = data
                     results = marshal(results, TodoResourceFileds.resource_fields) if results else None
-                    return ResponseHelper.returnTrueJson(results)
+                    return ResponseHelper.return_true_data(results)
                 else:
                     print('数据已经存在，不用添加')
-                    return ResponseHelper.returnTrueJson(msg='待办事项名称已存在', data=None)
+                    return ResponseHelper.return_true_data(msg='待办事项名称已存在', data=None)
         except Exception as ex:
-            return ResponseHelper.returnFalseJson(msg=str(ex))
+            return ResponseHelper.return_false_data(msg=str(ex))
 
     def put_todo(self, data):
         """修改待办事项"""
         try:
             results = None
             data = marshal(results, TodoResourceFileds.resource_fields) if results else None
-            return ResponseHelper.returnTrueJson(results)
+            return ResponseHelper.return_true_data(results)
         except Exception as ex:
-            return ResponseHelper.returnFalseJson(msg=str(ex))
+            return ResponseHelper.return_false_data(msg=str(ex))
 
     def delete_todo(self, title):
         """删除待办事项"""
         try:
             if not title:
-                return ResponseHelper.returnTrueJson(msg='标题不能为空', data=None)
+                return ResponseHelper.return_true_data(msg='标题不能为空', data=None)
             results = mongo.db.todo.remove({'title': title})
             data = marshal(results, TodoResourceFileds.resource_fields) if results else None
-            return ResponseHelper.returnTrueJson(results)
+            return ResponseHelper.return_true_data(results)
         except Exception as ex:
-            return ResponseHelper.returnFalseJson(msg=str(ex))
+            return ResponseHelper.return_false_data(msg=str(ex))
 
     def get_status_todo(self, status):
         """获取完成/未完成的待办事项"""
@@ -68,6 +68,6 @@ class TodolistManager():
             results = list(mongo.db.todo.find({'status': status}))
             print(results)
             results = marshal(results, TodoResourceFileds.resource_fields) if results else None
-            return ResponseHelper.returnTrueJson(results)
+            return ResponseHelper.return_true_data(results)
         except Exception as ex:
-            return ResponseHelper.returnFalseJson(msg=str(ex))
+            return ResponseHelper.return_false_data(msg=str(ex))

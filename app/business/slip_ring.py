@@ -23,10 +23,10 @@ class SlipRingManager():
                 {'_id': 0, 'c_date': 0, 'eqp_id': 0, 'name': 0} # 将不需要的键排除掉
             ).sort({'clock': 1}))
             data = marshal(result, StatsFields.resource_fields) if result else None
-            return ResponseHelper.returnTrueJson(data)
+            return ResponseHelper.return_true_data(data)
         except Exception as ex:
             self.logger.error('服务器错误！')
-            return ResponseHelper.returnFalseJson(msg='Server Error', status=500)
+            return ResponseHelper.return_false_data(msg='Server Error', status=500)
 
     def get_motor_speed(self, eqp_id, args=None):
         """获取滑环电机转速"""
@@ -40,7 +40,7 @@ class SlipRingManager():
                 {'_id': 0, 'c_date': 0, 'eqp_id': 0, 'name': 0} # 将不需要的键排除掉
             ).sort({'clock': 1}))
             data = marshal(result, StatsFields.resource_fields) if result else None
-            return ResponseHelper.returnTrueJson(data)
+            return ResponseHelper.return_true_data(data)
         except Exception as ex:
             self.logger.error('服务器错误！')
-            return ResponseHelper.returnFalseJson(msg='Server Error', status=500)
+            return ResponseHelper.return_false_data(msg='Server Error', status=500)

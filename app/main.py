@@ -39,14 +39,14 @@ def create_app():
     api_bp = Blueprint('api', __name__)
     api = swagger.docs(Api(api_bp), apiVersion='0.1', resourcePath='/',
                        description='EMDP_API', api_spec_url='/swagger') # swagger支持
-    bind_resources(api)
-    app.register_blueprint(api_bp, url_prefix='/api')
+    bind_resources(api) # restful 的逻辑
+    app.register_blueprint(api_bp, url_prefix='/api')   # 蓝图注册
 
     bind_views(app)
     return app
 
 def bind_views(app):
-    """注册视图路由"""
+    """注册客户端视图，蓝图绑定"""
     # @app.before_request
     # def before_request(Exception=None):
     #     print('=*'*10 + ' this runs before request ' + '*='*10)
@@ -55,9 +55,9 @@ def bind_views(app):
     # def teardown_request(Exception=None):
     #     print('+='*10 + ' this runs after request ' + '+='*10)
 
-    app.register_blueprint(views.mod_index, url_prefix='/home')
-    app.register_blueprint(views.mod_user)
-    app.register_blueprint(views.mod_todolist, url_prefix='/todolist')
+    app.register_blueprint(views.home_bp, url_prefix='/home')
+    app.register_blueprint(views.user_bp)
+    app.register_blueprint(views.todolist_bp, url_prefix='/todolist')
 
 def bind_resources(api):
     """绑定对应资源"""

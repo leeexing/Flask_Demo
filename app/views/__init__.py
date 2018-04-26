@@ -1,4 +1,4 @@
 # -*- coding:utf-8 -*-
-from .index import mod_index
-from .user import mod_user
-from .todolist import mod_todolist
+from .index import home_bp
+from .user import user_bp
+from .todolist import todolist_bp

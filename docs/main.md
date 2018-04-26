@@ -1,6 +1,8 @@
 # 主文件
 
-## 关于配置项
+> 关于配置项
+
+## flask_pymongo
 
 flask_pymongo
 在设置配置项的时候，原先是这么写的
@@ -75,3 +77,9 @@ MONGO_DBNAME：简单就是数据库名，需要配合 `MONGO_HOST`、`MONGO_POR
 
 参考：
 [Flask-PyMongo](https://www.cnblogs.com/Erick-L/p/7047064.html)
+
+## Blueprint
+
+> 蓝图
+
+蓝图的概念，可以分别定义模块的视图、模板、视图等等

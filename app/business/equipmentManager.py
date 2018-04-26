@@ -25,9 +25,9 @@ class EquipmentManager():
                     'Latitude': item.Latitude,
                     'Type': item.Type
                 })
-            return ResponseHelper.returnTrueJson(marshal(eqps, EquipmentResourceFields.resource_fields))
+            return ResponseHelper.return_true_data(marshal(eqps, EquipmentResourceFields.resource_fields))
         except Exception as ex:
-            return ResponseHelper.returnFalseJson(msg=str(ex), status=500)
+            return ResponseHelper.return_false_data(msg=str(ex), status=500)
 
 class UserManager():
     """用户处理业务类"""
@@ -37,18 +37,18 @@ class UserManager():
         try:
             results = list(mongo.db.users.find({}))
             print(results)
-            return ResponseHelper.returnTrueJson(marshal(results, UserResourceFields.resource_fields))
+            return ResponseHelper.return_true_data(marshal(results, UserResourceFields.resource_fields))
         except Exception as ex:
-            return ResponseHelper.returnFalseJson(msg = str(ex), status = 500)
+            return ResponseHelper.return_false_data(msg = str(ex), status = 500)
 
     def get_user(self, user_name):
         """获取具体用户信息"""
         try:
             results = list(mongo.db.users.find({'username': user_name}))
             print(results)
-            return ResponseHelper.returnTrueJson(marshal(results, UserResourceFields.resource_fields))
+            return ResponseHelper.return_true_data(marshal(results, UserResourceFields.resource_fields))
         except Exception as ex:
-            return ResponseHelper.returnFalseJson(msg = str(ex), status = 500)
+            return ResponseHelper.return_false_data(msg = str(ex), status = 500)
 
     def insert_users(self, data):
         """添加用户信息"""
@@ -69,6 +69,6 @@ class UserManager():
                     mongo.db.user.save(data)
             results = data
             results = marshal(results, UserResourceFields.resource_fields) if results else None
-            return ResponseHelper.returnTrueJson(results)
+            return ResponseHelper.return_true_data(results)
         except Exception as ex:
-            return ResponseHelper.returnFalseJson(msg=str(ex))
+            return ResponseHelper.return_false_data(msg=str(ex))
