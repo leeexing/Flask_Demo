@@ -11,6 +11,6 @@ todolist_bp = Blueprint('todolist', __name__)
 @todolist_bp.route('/')
 def index():
     """todo首页"""
-    todos = mongo.db.todo.find({})
+    todos = mongo.db.todo.find().limit(10)
     print(todos)
     return render_template('todolist/todolist.html', name='Leeing', todos=todos)
