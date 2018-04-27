@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}  TODOLIST  {% endblock %}
+
+{% block style %}
+  <link rel="stylesheet" href="/static/css/main.css">
+  <style>
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .header .socket {
+      padding-right: 25px;
+      font-size: 18px;
+    }
+  </style>
+{% endblock %}
+
+{% block header %}
+<header class="header">
+  <div>
+    <h1>TODOLIST Page</h1>
+    <p>welcome ~, {{name}}</p>
+  </div>
+  <div class="socket">0</div>
+</header>
+{% endblock %}
+
+{% block content %}
+  <main class="main pad20">
+    <a href="#" class="btn primary todo_btn">LOGIN</a>
+    <hr class="hr">
+  </main>
+{% endblock %}
+  
+{% block script %}
+  {{ super() }}
+  <script src="https://cdn.bootcss.com/jquery/3.3.0/jquery.min.js"></script>
+  <script src="https://cdn.bootcss.com/socket.io/1.7.4/socket.io.min.js"></script>
+  <script src="{{url_for('static', filename='js/todolist.js')}}"></script>
+{% endblock %}

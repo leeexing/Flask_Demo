@@ -1,14 +1,14 @@
 {% extends "base.html" %}
 
-{% block title %}  WEB_SOCKET  {% endblock %}
+{% block title %}  Home  {% endblock %}
 
 {% block content %}
   <main class="main pad20">
-    <a href="#" class="btn primary socket">Socket</a>
+    <a href="#" class="btn primary socket">Home</a>
     <hr style="margin-top:10px">
     <div class="socket-wrap pad10"></div>
     <div class="avatar">
-      <input id="file" type="file" class="file" style="display:none" multiple="multiple" accept="image/png, image/jpeg">
+      <input id="file" type="file" class="file" style="display:none" accept="image/png, image/jpeg">
       <a href="#" class="btn success upload">upload</a>
     </div>
   </main>
@@ -17,6 +17,5 @@
 {% block script %}
   {{ super() }}
   <script src="https://cdn.bootcss.com/jquery/3.3.0/jquery.min.js"></script>
-  <script src="https://cdn.bootcss.com/socket.io/1.7.4/socket.io.min.js"></script>
-  <script src="{{url_for('static', filename='js/socket_test.js')}}"></script>
+  <script src="{{url_for('static', filename='js/home.js')}}"></script>
 {% endblock %}

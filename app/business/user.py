@@ -146,9 +146,9 @@ class UserManager:
             'expiresIn': 24*60
         }
         return ResponseHelper.return_true_data(res_data)
-        
+
     @jwt_optional
-    def user_query(self, id):
+    def user_query(self, use_id):
         """用户查询"""
 
         cur = {
@@ -160,7 +160,7 @@ class UserManager:
         user_type = cur.get('current_type')
         if 1 == user_type:
             try:
-                user = User.query.filter_by(ID=int(id)).first()
+                user = User.query.filter_by(ID=int(use_id)).first()
             except Exception as e:
                 self.logger.error('服务器错误：', str(e))
                 return ResponseHelper.return_false_data(msg='Server Error', status=500)
@@ -189,12 +189,13 @@ class UserManager:
         if 1 == user_type:
             try:
                 users = User.query.all()
+                print(users)
             except Exception as e:
                 self.logger.error('服务器错误：', str(e))
                 return ResponseHelper.return_false_data(msg='Server Error', status=500)
             if users:
                 users_list = [dict(userid=user.ID, username=user.UserName,
-                                    name=user.Name, usertype=user.UserType) for user in users]
+                                   name=user.Name, usertype=user.UserType.value) for user in users]
                 return ResponseHelper.return_true_data(users_list)
         else:
             return ResponseHelper.return_false_data(msg='权限不足', status=200)
@@ -237,10 +238,12 @@ class UserManager:
             'current_identity': get_jwt_identity(),
             'current_type': get_jwt_claims()
         }
+        print(request.files)
         if not cur['current_identity']:
             return ResponseHelper.return_false_data(msg='请登录', status=200)
         user_name = cur.get('current_identity')[1]
         avatar = request.files.get('avatar')
+        print(avatar)
         if not avatar:
             return ResponseHelper.return_false_data(msg='图像未上传', status=200)
         avatar_data = avatar.read()
@@ -267,6 +270,7 @@ class UserManager:
             'current_identity': get_jwt_identity(),
             'current_type': get_jwt_claims()
         }
+        
         if not cur['current_identity']:
             return ResponseHelper.return_false_data(msg='请登录', status=200)
         user_type = cur.get('current_type')
