@@ -27,9 +27,46 @@ class UserManager:
     def __init__(self):
         self.logger = create_logger('FLASK')
 
+    def register(self):
+        """用户注册【主动】"""
+
+        user_info = request.get_json()
+        if not user_info:
+            return ResponseHelper.return_false_data(msg='参数错误', status=200)
+        user_name = user_info.get('user_name')
+        password = user_info.get('password')
+        name = user_info.get("name")
+        user_type = user_info.get("user_type")
+        if not all([user_name, password]):
+            return ResponseHelper.return_false_data(msg='账号密码不完整', status=200)
+        if not re.match(r'[a-z, A-Z]*\d*$', user_name):
+            return ResponseHelper.return_false_data(msg='账号格式不正确', status=200)
+        try:
+            user = User.query.filter_by(UserName=user_name).first()
+        except Exception as e:
+            self.logger.error('服务器错误：', str(e))
+            return ResponseHelper.return_false_data(msg='Server Error', status=500)
+        if user:
+            return ResponseHelper.return_false_data(msg='用户名已注册', status=200)
+        # 添加用户
+        user = User(UserName=user_name, Name=name, UserType=EnumUserType(int(user_type)))
+        user.password = password
+        try:
+            db.session.add(user)
+            db.session.commit()
+        except Exception as e:
+            self.logger.error('服务器错误：', str(e))
+            db.session.rollback()
+            return ResponseHelper.return_false_data(msg='Server Error', status=500)
+        user_data = {
+            'username': user.UserName,
+            'name': user.Name
+        }
+        return ResponseHelper.return_true_data(data=user_data)
+
     @jwt_optional
     def user_register(self):
-        """用户添加"""
+        """用户添加【被动】"""
 
         ret = {
             'current_identity': get_jwt_identity(),
@@ -193,7 +230,7 @@ class UserManager:
             return ResponseHelper.return_false_data(msg='权限不足', status=200)
 
     @jwt_optional
-    def set_user_avatar():
+    def set_user_avatar(self):
         """用户头像上传"""
 
         cur = {

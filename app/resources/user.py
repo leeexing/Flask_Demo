@@ -16,6 +16,17 @@ class Register(Resource):
 
     @swagger.operation()
     def post(self):
+        result = self.user_manager.register()
+        return result
+
+class UserRegister(Resource):
+    """注册"""
+
+    def __init__(self):
+        self.user_manager = UserManager()
+
+    @swagger.operation()
+    def post(self):
         result = self.user_manager.user_register()
         return result
 

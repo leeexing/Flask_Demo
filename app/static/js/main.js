@@ -23,6 +23,7 @@ function query(url, method='get', data=null){
       data = postDataFormat(data)
       if (typeof FormData !== 'function') {
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
+        // xhr.setRequestHeader('Content-Type', 'application/json')
       }
     }
     xhr.send(data)

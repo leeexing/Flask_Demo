@@ -72,8 +72,9 @@ def bind_resources(api):
     api.add_resource(TodoStat, '/todo/<int:status>', endpoint='todostat')
 
     # 用户注册
-    from app.resources.user import Register, Login, UserQuery, UsersQuery, SetUserAvatar
+    from app.resources.user import Register, UserRegister, Login, UserQuery, UsersQuery, SetUserAvatar
     api.add_resource(Register, '/user/register')
+    api.add_resource(UserRegister, '/user/add')
     api.add_resource(Login, '/user/login')
     api.add_resource(UsersQuery, '/users')
     api.add_resource(UserQuery, '/users/<string:id>')

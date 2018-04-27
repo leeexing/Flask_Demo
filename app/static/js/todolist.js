@@ -21,6 +21,32 @@ $(() => {
   //   socket_wrap.innerHTML = `<h1>连接次数：${msg.data}</h1>`
   // })
 
+  $('.todo_btn').click(() => {
+    let postData = {
+      name: 'leeing',
+      password: 123465
+    }
+    $.ajax({
+      type: 'POST',
+      url: 'http://localhost:5002/api/user/register',
+      contentType: "application/json;charset=utf-8",
+      data: JSON.stringify(postData),
+      success: function(data) {
+        console.log(data)
+      },
+      error: function(err) {
+        console.log(err)
+      }
+    })
+    // $.post('http://localhost:5002/api/user/register?id=12', postData, data => {
+    //   console.log(data)
+    // }, 'json')
+    // query('http://localhost:5002/api/user/register?id=12', 'post', postData)
+    //   .then(res => {
+    //     console.log(res)
+    //   })
+  })
+
   // 添加数据
   let $input = $('.add')
   let $renderWrap = $('.item-title')

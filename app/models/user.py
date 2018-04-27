@@ -6,7 +6,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 class EnumUserType(Enum):
     Admin = 1
-    common = 2
+    Common = 2
 
 class User(db.Model):
     """用户"""
