@@ -270,7 +270,6 @@ class UserManager:
             'current_identity': get_jwt_identity(),
             'current_type': get_jwt_claims()
         }
-        
         if not cur['current_identity']:
             return ResponseHelper.return_false_data(msg='请登录', status=200)
         user_type = cur.get('current_type')
@@ -288,3 +287,18 @@ class UserManager:
                 return ResponseHelper.return_false_data(msg='请添加菜单', status=200)
         else:
             return ResponseHelper.return_false_data(msg='请添加角色', status=200)
+
+class Family:
+    """测试关系型数据库的深刻含义"""
+
+    def __init__(self):
+        self.logger = create_logger('Flask')
+
+    def addFather(self):
+        """添加父亲"""
+        info = request.get_json()
+        father_name = info.get('name')
+
+
+    def addChild(self):
+        """添加孩子"""

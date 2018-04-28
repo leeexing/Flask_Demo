@@ -25,3 +25,20 @@ class Menuconfig(db.Model):
     UserType = db.Column(db.Enum(EnumUserType))
     CreateTime = db.Column(db.DateTime, nullable=False, default=datetime.now)
     ModifyTime = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
+
+class Father(db.Model):
+    """测试父亲表"""
+    __tablename__ = 'father'
+
+    id = db.Column(db.Integer, primary_key=True, unique=True, nullable=False)
+    name = db.Column(db.String(32), unique=True, nullable=False)
+    childrens = db.relationship('Children', backref='father')
+
+class Children(db.Model):
+    """孩子"""
+    __tablename__ = 'children'
+
+    id = db.Column(db.Integer, primary_key=True, unique=True, nullable=False)
+    name = db.Column(db.String(32))
+    age = db.Column(db.Integer)
+    father_id = db.Column(db.Integer, db.ForeignKey('father.id'))
