@@ -357,8 +357,25 @@ class Family:
         print(request.args)
         childrens = Father.query.filter_by(name=name).first().childrens
         print(childrens)
+        childrens_list = [dict(name=child.name, age=child.age, sex=child.sexType.name) for child in childrens]
         get_data = {
             'fatherName': name,
-            'childrens': childrens
+            'childrens': childrens_list
         }
         return ResponseHelper.return_true_data(get_data)
+
+    def get_father(self, name):
+        """查询孩子的父亲是谁"""
+
+        try:
+            father = Children.query.filter_by(name=name).first().father
+        except Exception as ex:
+            print('Error happend %s'%str(ex))
+            return ResponseHelper.return_false_data(msg='Server Error', status=500)
+        print(father)
+        data = {
+            'childName': name,
+            'fatherName': father.name
+        }
+        return ResponseHelper.return_true_data(data)
+

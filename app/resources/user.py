@@ -99,3 +99,13 @@ class QueryChildren(Resource):
     def get(self, name):
         result = self.family.get_children_by_father_name(name)
         return result
+
+class QueryFather(Resource):
+    """获取孩子的父亲"""
+
+    def __init__(self):
+        self.family = Family()
+
+    def get(self, name):
+        result = self.family.get_father(name)
+        return result
