@@ -79,3 +79,9 @@ def bind_resources(api):
     api.add_resource(UsersQuery, '/users')
     api.add_resource(UserQuery, '/users/<string:id>')
     api.add_resource(SetUserAvatar, '/user/setavatar')
+
+    # 家庭关系
+    from app.resources.user import FatherAdd, ChildAdd, QueryChildren
+    api.add_resource(FatherAdd, '/father/add')
+    api.add_resource(ChildAdd, '/child/add')
+    api.add_resource(QueryChildren, '/father/<string:name>')

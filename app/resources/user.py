@@ -6,7 +6,7 @@ from flask_restful_swagger import swagger
 from app.common.fields import (Register_Fileds, Register_Response_Fields, 
                                Login_Fields, Login_Response_Fields,
                                User_Query_Fields, Menu_Response_Fileds)
-from app.business.user import UserManager
+from app.business.user import UserManager, Family
 
 class Register(Resource):
     """注册"""
@@ -68,4 +68,34 @@ class SetUserAvatar(Resource):
 
     def post(self):
         result = self.user_manager.set_user_avatar()
+        return result
+
+class FatherAdd(Resource):
+    """添加父亲角色"""
+
+    def __init__(self):
+        self.family = Family()
+
+    def post(self):
+        result = self.family.add_father()
+        return result
+
+class ChildAdd(Resource):
+    """添加孩子角色"""
+
+    def __init__(self):
+        self.family = Family()
+
+    def post(self):
+        result = self.family.add_child()
+        return result
+
+class QueryChildren(Resource):
+    """获取父亲的孩子"""
+
+    def __init__(self):
+        self.family = Family()
+
+    def get(self, name):
+        result = self.family.get_children_by_father_name(name)
         return result

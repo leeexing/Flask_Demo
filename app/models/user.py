@@ -8,6 +8,10 @@ class EnumUserType(Enum):
     Admin = 1
     Common = 2
 
+class EnumSexType(Enum):
+    Man = 1
+    Woman = 2
+
 class User(db.Model):
     """用户"""
     __tablename__ = 'user'

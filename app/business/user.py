@@ -4,8 +4,8 @@
 from flask import request
 from flask_restful import marshal
 from app.db import MYSQL_DB as db
-from app.models.menu import Menu, Menuconfig
-from app.models.user import User, EnumUserType
+from app.models.menu import Menu, Menuconfig, Father, Children
+from app.models.user import User, EnumUserType, EnumSexType
 from app.util.response import ResponseHelper
 from app.util.logger import create_logger
 from app.util.image_storage import storage
@@ -294,11 +294,71 @@ class Family:
     def __init__(self):
         self.logger = create_logger('Flask')
 
-    def addFather(self):
+    def add_father(self):
         """添加父亲"""
         info = request.get_json()
+        print('+='*20)
+        print(info)
         father_name = info.get('name')
+        father_position = info.get('position')
+        try:
+            father_db = Father.query.filter_by(name=father_name).first()
+        except Exception as ex:
+            print('Error happend %s'%str(ex))
+            return ResponseHelper.return_false_data(msg='Server Error', status=500)
+        if father_db:
+            return ResponseHelper.return_false_data(msg='数据已存在', status=200)
+        father = Father(name=father_name, position=father_position)
+        try:
+            db.session.add(father)
+            db.session.commit()
+        except Exception as ex:
+            print('error happend %s'%str(ex))
+            db.session.rollback()
+            return ResponseHelper.return_false_data(msg='Server Error', status=500)
+        father_data = {
+            'name': father_name,
+            'position': father_position
+        }
+        return ResponseHelper.return_true_data(father_data)
 
 
-    def addChild(self):
+    def add_child(self):
         """添加孩子"""
+
+        info = request.get_json()
+        print('+-'*20)
+        print(info)
+        name = info.get('name')
+        age = info.get('age')
+        sex_type = info.get('sexType')
+        father_name = info.get('fatherName')
+        father = Father.query.filter_by(name=father_name).first()
+        child = Children(name=name, age=age, sexType=EnumSexType(int(sex_type)), fatherID=father.ID)
+        try:
+            db.session.add(child)
+            db.session.commit()
+        except Exception as ex:
+            print('Errro happen %s'%str(ex))
+            db.session.rollback()
+            return ResponseHelper.return_false_data(msg='Server Error', status=500)
+        child_data = {
+            'name': name,
+            'age': age,
+            'sex': child.sexType.name,
+            'fatherID': father.ID
+        }
+        return ResponseHelper.return_true_data(child_data)
+
+    def get_children_by_father_name(self, name):
+        """查询父亲有几个孩子"""
+
+        print('=+'*20)
+        print(request.args)
+        childrens = Father.query.filter_by(name=name).first().childrens
+        print(childrens)
+        get_data = {
+            'fatherName': name,
+            'childrens': childrens
+        }
+        return ResponseHelper.return_true_data(get_data)

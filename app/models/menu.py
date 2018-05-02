@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 from datetime import datetime
 from app.db import MYSQL_DB as db
-from app.models.user import EnumUserType
+from app.models.user import EnumUserType, EnumSexType
 
 class Menu(db.Model):
     """菜单"""
@@ -27,18 +27,20 @@ class Menuconfig(db.Model):
     ModifyTime = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
 
 class Father(db.Model):
-    """测试父亲表"""
+    """父亲表"""
     __tablename__ = 'father'
 
-    id = db.Column(db.Integer, primary_key=True, unique=True, nullable=False)
+    ID = db.Column(db.Integer, primary_key=True, unique=True, nullable=False)
     name = db.Column(db.String(32), unique=True, nullable=False)
-    childrens = db.relationship('Children', backref='father')
+    position = db.Column(db.String(32))
+    childrens = db.relationship('Children', backref='father', lazy='select')
 
 class Children(db.Model):
     """孩子"""
     __tablename__ = 'children'
 
-    id = db.Column(db.Integer, primary_key=True, unique=True, nullable=False)
+    ID = db.Column(db.Integer, primary_key=True, unique=True, nullable=False)
     name = db.Column(db.String(32))
     age = db.Column(db.Integer)
-    father_id = db.Column(db.Integer, db.ForeignKey('father.id'))
+    sexType = db.Column(db.Enum(EnumSexType))
+    fatherID = db.Column(db.Integer, db.ForeignKey('father.ID'))
