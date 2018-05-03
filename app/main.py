@@ -40,7 +40,7 @@ def create_app():
     api = swagger.docs(Api(api_bp), apiVersion='0.1', resourcePath='/',
                        description='EMDP_API', api_spec_url='/swagger') # swagger支持
     bind_resources(api) # restful 的逻辑
-    app.register_blueprint(api_bp, url_prefix='/api')   # 蓝图注册
+    app.register_blueprint(api_bp, url_prefix='/api') # 蓝图注册
 
     bind_views(app)
     return app
@@ -72,7 +72,8 @@ def bind_resources(api):
     api.add_resource(TodoStat, '/todo/<int:status>', endpoint='todostat')
 
     # 用户注册
-    from app.resources.user import Register, UserRegister, Login, UserQuery, UsersQuery, SetUserAvatar
+    from app.resources.user import (Register, UserRegister, Login,
+                                    UserQuery, UsersQuery, SetUserAvatar)
     api.add_resource(Register, '/user/register')
     api.add_resource(UserRegister, '/user/add')
     api.add_resource(Login, '/user/login')
@@ -84,5 +85,5 @@ def bind_resources(api):
     from app.resources.user import FatherAdd, ChildAdd, QueryChildren, QueryFather
     api.add_resource(FatherAdd, '/father/add')
     api.add_resource(ChildAdd, '/child/add')
-    api.add_resource(QueryChildren, '/father/<string:name>')
-    api.add_resource(QueryFather, '/child/<string:name>')
+    api.add_resource(QueryChildren, '/children/<string:fathername>')
+    api.add_resource(QueryFather, '/father/<string:childname>')

@@ -83,3 +83,103 @@ MONGO_DBNAME：简单就是数据库名，需要配合 `MONGO_HOST`、`MONGO_POR
 > 蓝图
 
 蓝图的概念，可以分别定义模块的视图、模板、视图等等
+
+主要注意几个重要的API
+
+1. Blueprint('', __name__, template_folder='', static_folder='', url_prefix='/')
+2. .register_blueprint(api[, view], url_prefix='')
+
+```py demo
+# /app/music.py
+from flask import Blueprint    #不用多说
+ 
+musics=Blueprint('misics',__name__)       #创建一个blueprint对象。第一个参数可看做该blueprint对象的姓名
+                                          #在一个app里，姓名不能与其余的Blueprint对象姓名重复
+                                          #第二个参数__name__用作初始化
+ 
+@musics.route("/music")                   #将蓝图对象当做‘app’那样使用
+def music():
+    return '这里是一首音乐~'
+
+# /app/movie.py
+
+from flask import Blueprint    #不用多说
+ 
+movies=Blueprint('movies',__name__)
+@movies.route("/movie")
+def movie():
+    return '这里是一部好片~'
+
+# /app/main.py
+from flask import Flask    # 不用多说
+from blueprints import musics,movies    #导入blueprints目录下musics.py与movies.py模块,
+ 
+app=Flask(__name__)    #创建 Flask()对象： app
+ 
+@app.route('/')  #使用了蓝图，app.route() 这种模式就仍可以使用，注意路由重复的问题
+def hello_world():
+    return 'hello my world !'
+ 
+app.register_blueprint(musics.musics)     # 将musics模块里的蓝图对象musics注册到app
+app.register_blueprint(movies.movies)     # 将movies模块里的蓝图对象movies注册到app
+ 
+if __name__=='__main__':
+    app.run(debug=True)
+```
+
+蓝图既可以注册视图，也可以注册api。就看怎么安排了
+
+`NOTES`：
+注意和 `restful` 的区别
+
+## RESTFUL
+
+> api restful
+
+掌握两个 API 的使用方法
+
+1. Api(app)
+2. add_resource()
+
+```py demo
+app = Flask(__name__)
+api = Api(app)
+
+class HelloWorld(Resource):
+    def get(self):
+        return {'hello': 'world'}
+
+api.add_resource(HelloWorld, '/')
+```
+
+## request.args
+
+获取路由问号（？）后面的参数
+
+NOTE：
+路由传参，字段里面不能夹带参数
+
+```js wrong
+
+http://localhost:5002/api/children/leeing?name='leeing'
+```
+
+```js right
+http://localhost:5002/api/children/leeing?name=leeing
+```
+
+虽然通过 request.args.get('name') 也能拿到对应的字段值，但是通过数据库查询的时候，这就不是我们期待的那个值了
+
+```py
+father_name = request.args.get('name')
+try:
+    father = Father.query.filter_by(name=father_name).first()
+    if not father:
+        return ResponseHelper.return_false_data(msg='父亲用户名不存在', status=200)
+    childrens = father.childrens2
+except Exception as ex:
+    self.logger.error('服务器错误:%s', str(ex))
+    return ResponseHelper.return_false_data(msg='Server Error', status=500)
+```
+
+这里获取不到相应的数据

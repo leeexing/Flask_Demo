@@ -96,8 +96,8 @@ class QueryChildren(Resource):
     def __init__(self):
         self.family = Family()
 
-    def get(self, name):
-        result = self.family.get_children_by_father_name(name)
+    def get(self, fathername):
+        result = self.family.get_children_by_father_name(fathername)
         return result
 
 class QueryFather(Resource):
@@ -106,6 +106,6 @@ class QueryFather(Resource):
     def __init__(self):
         self.family = Family()
 
-    def get(self, name):
-        result = self.family.get_father(name)
+    def get(self, childname):
+        result = self.family.get_father(childname)
         return result

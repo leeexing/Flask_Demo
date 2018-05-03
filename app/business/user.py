@@ -281,12 +281,14 @@ class UserManager:
                 return ResponseHelper.return_false_data(msg='Server Error', status=500)
             if menus:
                 menu_list = [dict(menuname=menu.Menu.Name, menuurl=menu.Menu.Url,
-                                menupid=menu.Menu.Pid) for menu in menus]
+                                  menupid=menu.Menu.Pid) for menu in menus]
                 return ResponseHelper.return_true_data(menu_list)
             else:
                 return ResponseHelper.return_false_data(msg='请添加菜单', status=200)
         else:
             return ResponseHelper.return_false_data(msg='请添加角色', status=200)
+
+########## Family ###########
 
 class Family:
     """测试关系型数据库的深刻含义"""
@@ -355,9 +357,18 @@ class Family:
 
         print('=+'*20)
         print(request.args)
-        childrens = Father.query.filter_by(name=name).first().childrens
+        father_name = request.args.get('name')
+        try:
+            father = Father.query.filter_by(name=father_name).first()
+            if not father:
+                return ResponseHelper.return_false_data(msg='父亲用户名不存在', status=200)
+            childrens = father.childrens2
+        except Exception as ex:
+            self.logger.error('服务器错误:%s', str(ex))
+            return ResponseHelper.return_false_data(msg='Server Error', status=500)
         print(childrens)
-        childrens_list = [dict(name=child.name, age=child.age, sex=child.sexType.name) for child in childrens]
+        childrens_list = [dict(name=child.name, age=child.age,
+                               sex=child.sexType.name) for child in childrens]
         get_data = {
             'fatherName': name,
             'childrens': childrens_list
@@ -368,7 +379,10 @@ class Family:
         """查询孩子的父亲是谁"""
 
         try:
-            father = Children.query.filter_by(name=name).first().father
+            child = Children.query.filter_by(name=name).first()
+            if not child:
+                return ResponseHelper.return_false_data(msg='孩子名不存在', status=200)
+            father = child.father
         except Exception as ex:
             print('Error happend %s'%str(ex))
             return ResponseHelper.return_false_data(msg='Server Error', status=500)
@@ -378,4 +392,3 @@ class Family:
             'fatherName': father.name
         }
         return ResponseHelper.return_true_data(data)
-

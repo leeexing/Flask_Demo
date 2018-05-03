@@ -44,4 +44,3 @@ class Children(db.Model):
     age = db.Column(db.Integer)
     sexType = db.Column(db.Enum(EnumSexType))
     fatherID = db.Column(db.Integer, db.ForeignKey('father.ID'))
-    # father = db.relationship('Father', backref=db.backref('children', order_by=ID))
