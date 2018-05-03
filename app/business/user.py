@@ -291,7 +291,10 @@ class UserManager:
 ########## Family ###########
 
 class Family:
-    """测试关系型数据库的深刻含义"""
+    """
+    测试关系型数据库的深刻含义
+    重点理解 ORM SQLAlchemy 中的 relationship 和 backref 的使用
+    """
 
     def __init__(self):
         self.logger = create_logger('Flask')
@@ -299,15 +302,16 @@ class Family:
     def add_father(self):
         """添加父亲"""
         info = request.get_json()
-        print('+='*20)
-        print(info)
+        if not info:
+            return ResponseHelper.return_false_data(msg='提交数据不能为空', status=200)
         father_name = info.get('name')
         father_position = info.get('position')
         try:
             father_db = Father.query.filter_by(name=father_name).first()
         except Exception as ex:
-            print('Error happend %s'%str(ex))
+            self.logger.error('服务器错误：%s', str(ex))
             return ResponseHelper.return_false_data(msg='Server Error', status=500)
+        print(father_db)
         if father_db:
             return ResponseHelper.return_false_data(msg='数据已存在', status=200)
         father = Father(name=father_name, position=father_position)
@@ -315,7 +319,7 @@ class Family:
             db.session.add(father)
             db.session.commit()
         except Exception as ex:
-            print('error happend %s'%str(ex))
+            self.logger.error('服务器错误：%s', str(ex))
             db.session.rollback()
             return ResponseHelper.return_false_data(msg='Server Error', status=500)
         father_data = {
@@ -324,24 +328,27 @@ class Family:
         }
         return ResponseHelper.return_true_data(father_data)
 
-
     def add_child(self):
         """添加孩子"""
 
         info = request.get_json()
-        print('+-'*20)
-        print(info)
         name = info.get('name')
         age = info.get('age')
         sex_type = info.get('sexType')
         father_name = info.get('fatherName')
-        father = Father.query.filter_by(name=father_name).first()
+        try:
+            father = Father.query.filter_by(name=father_name).first()
+        except Exception as ex:
+            self.logger.error('服务器错误：%s', str(ex))
+            return ResponseHelper.return_false_data(msg='Server Error', status=500)
+        if not father:
+            return ResponseHelper.return_false_data(msg='该父亲还没有添加', status=200)
         child = Children(name=name, age=age, sexType=EnumSexType(int(sex_type)), fatherID=father.ID)
         try:
             db.session.add(child)
             db.session.commit()
         except Exception as ex:
-            print('Errro happen %s'%str(ex))
+            self.logger.error('服务器错误：%s', str(ex))
             db.session.rollback()
             return ResponseHelper.return_false_data(msg='Server Error', status=500)
         child_data = {
@@ -352,17 +359,17 @@ class Family:
         }
         return ResponseHelper.return_true_data(child_data)
 
-    def get_children_by_father_name(self, name):
+    def get_children(self):
         """查询父亲有几个孩子"""
 
-        print('=+'*20)
-        print(request.args)
-        father_name = request.args.get('name')
+        name = request.args.get('name')
+        if not name:
+            return ResponseHelper.return_false_data(msg='参数错误', status=200)
         try:
-            father = Father.query.filter_by(name=father_name).first()
+            father = Father.query.filter_by(name=name).first()
             if not father:
                 return ResponseHelper.return_false_data(msg='父亲用户名不存在', status=200)
-            childrens = father.childrens2
+            childrens = father.childrens
         except Exception as ex:
             self.logger.error('服务器错误:%s', str(ex))
             return ResponseHelper.return_false_data(msg='Server Error', status=500)
@@ -375,16 +382,19 @@ class Family:
         }
         return ResponseHelper.return_true_data(get_data)
 
-    def get_father(self, name):
+    def get_father(self):
         """查询孩子的父亲是谁"""
 
+        name = request.args.get('name')
+        if not name:
+            return ResponseHelper.return_false_data(msg='参数错误', status=200)
         try:
             child = Children.query.filter_by(name=name).first()
             if not child:
                 return ResponseHelper.return_false_data(msg='孩子名不存在', status=200)
             father = child.father
         except Exception as ex:
-            print('Error happend %s'%str(ex))
+            self.logger.error('服务器错误：%s', str(ex))
             return ResponseHelper.return_false_data(msg='Server Error', status=500)
         print(father)
         data = {

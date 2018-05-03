@@ -85,5 +85,5 @@ def bind_resources(api):
     from app.resources.user import FatherAdd, ChildAdd, QueryChildren, QueryFather
     api.add_resource(FatherAdd, '/father/add')
     api.add_resource(ChildAdd, '/child/add')
-    api.add_resource(QueryChildren, '/children/<string:fathername>')
-    api.add_resource(QueryFather, '/father/<string:childname>')
+    api.add_resource(QueryChildren, '/children')
+    api.add_resource(QueryFather, '/father')

@@ -70,6 +70,8 @@ class SetUserAvatar(Resource):
         result = self.user_manager.set_user_avatar()
         return result
 
+########## Family ##########
+
 class FatherAdd(Resource):
     """添加父亲角色"""
 
@@ -96,8 +98,8 @@ class QueryChildren(Resource):
     def __init__(self):
         self.family = Family()
 
-    def get(self, fathername):
-        result = self.family.get_children_by_father_name(fathername)
+    def get(self):
+        result = self.family.get_children()
         return result
 
 class QueryFather(Resource):
@@ -106,6 +108,6 @@ class QueryFather(Resource):
     def __init__(self):
         self.family = Family()
 
-    def get(self, childname):
-        result = self.family.get_father(childname)
+    def get(self):
+        result = self.family.get_father()
         return result

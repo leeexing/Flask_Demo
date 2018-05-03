@@ -130,5 +130,63 @@ article_author = article.author
 # 这里就可以获取到作者的密码和邮箱等其他信息了
 ```
 
+**另外**
+backref 后面的 lazy 设置的值不一样，效果也不一样
+
+1. lazy='select'
+
+当Class的lazy属性是 `select` 的时候，他就是直接查找出了对象，并由对象为元素组成了一个list
+
+```py
+childrens = Father.query.filter_by(name=father_name).first().childrens
+print(childrens)
+
+[<Children 1>, <Children 2>, <Children 3>, <Children 4>]
+```
+
+2. lazy='dynamic'
+当Class的lazy属性是 `dynamic` 的时候，变成了一个查询对象，而不是直接生成列表，你可以在他上面进行操作，比如filter等
+
+`lazy="dynamic"只可以用在一对多和多对多关系中，不可以用在一对一和多对一中`
+
+```py
+childrens = Father.query.filter_by(name=father_name).first().childrens
+print(childrens)
+
+SELECT children.`ID` AS `children_ID`, children.name AS children_name, children.age AS children_age, children.`sexType` AS `children_sexType`, children.`fatherID` AS `children_fatherID`
+FROM children
+WHERE %(param_1)s = children.`fatherID`
+```
+
+3. lazy='joined'
+
+当backref="_class" 时和backref=db.backref("_class",lazy="joined")时，
+
+s1._class生成的结果和type类型，都是一样的！
+
+### 一点显示时的优化
+
+```py
+class Father(db.Model):
+    """父亲表"""
+    __tablename__ = 'father'
+
+    ID = db.Column(db.Integer, primary_key=True, unique=True, nullable=False)
+    name = db.Column(db.String(32), unique=True, nullable=False)
+    position = db.Column(db.String(32))
+    childrens = db.relationship('Children', backref='father', lazy='select') # 这里需要select
+
+    def __repr__(self):
+        return '%s(%r)' % (self.__class__.__name__, self.name)
+
+childrens = Father.query.filter_by(name=father_name).first().childrens
+print(childrens)
+
+[<Children 1>, <Children 2>, <Children 3>, <Children 4>] # 这是没有在 class 中重置 __repr__ 的输出
+
+[Children('小明'), Children('小红'), Children('小花'), Children('小华')] # 设置了之后
+```
+
 【参考】
 [如何理解 SQLAlchemy中的relationship和backref](https://www.zhihu.com/question/38456789)
+[ORM SQLAlchemy](https://www.cnblogs.com/sysnap/p/6484226.html?utm_source=itdadao&utm_medium=referral)

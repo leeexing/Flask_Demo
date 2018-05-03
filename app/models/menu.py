@@ -33,7 +33,10 @@ class Father(db.Model):
     ID = db.Column(db.Integer, primary_key=True, unique=True, nullable=False)
     name = db.Column(db.String(32), unique=True, nullable=False)
     position = db.Column(db.String(32))
-    childrens = db.relationship('Children', backref='father', lazy='dynamic')
+    childrens = db.relationship('Children', backref='father', lazy='select')
+
+    def __repr__(self):
+        return '%s(%r)' % (self.__class__.__name__, self.name)
 
 class Children(db.Model):
     """孩子"""
@@ -44,3 +47,7 @@ class Children(db.Model):
     age = db.Column(db.Integer)
     sexType = db.Column(db.Enum(EnumSexType))
     fatherID = db.Column(db.Integer, db.ForeignKey('father.ID'))
+
+    def __repr__(self):
+        return '%s(%r)' % (self.__class__.__name__, self.name)
+
