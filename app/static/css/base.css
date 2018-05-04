@@ -1,12 +1,59 @@
 @charset "UTF-8";
-.hei, .header {
-  padding: 20px 10px;
+.hd, .header, .m-header {
+  padding: 10px;
   background: #262626;
   color: #fff;
 }
 
-.header h1 {
+.header .title {
   margin-bottom: 15px;
+}
+
+.m-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 18px;
+}
+
+.m-header .avatar {
+  width: 40px;
+}
+
+.m-header .avatar img {
+  width: 100%;
+}
+
+.m-header .logout {
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.m-header .logout:hover {
+  color: #13c2c2;
+}
+
+.m-nav {
+  padding: 10px 150px;
+  background: #33363d;
+}
+
+.m-nav ul {
+  display: flex;
+}
+
+.m-nav ul li {
+  padding-right: 30px;
+}
+
+.m-nav ul li a {
+  padding: 3px;
+  color: #fff;
+  font-size: 14px;
+}
+
+.m-nav ul li a:hover {
+  color: #1890ff;
 }
 
 input {
@@ -29,10 +76,6 @@ input:focus {
   padding: 4px;
   background: #fa8c16;
   border-radius: 4px;
-}
-
-.hr {
-  margin: 10px 0;
 }
 
 /*

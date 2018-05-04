@@ -7,6 +7,7 @@
   <title>{% block title %} Document {% endblock %}</title>
   <link rel="shortcut icon" href="/static/favicon.ico" />
   <link rel="icon" href="/static/favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="/static/css/iconfont/iconfont.css">
   <link rel="stylesheet" href="/static/css/reset.css">
   <link rel="stylesheet" href="/static/css/base.css">
   {% block style %}
@@ -14,10 +15,34 @@
 </head>
 <body>
   {% block header %}
-    <header class="header">
-      <h1>Home</h1>
-      <p>welcome ~, {{name}}</p>
+    <header class="m-header">
+      <p class="avatar">
+        <img src="../static/images/logo_godness.png" alt="logo">
+      </p>
+      <h1>Flask</h1>
+      <div class="logout">
+        <i class="icon iconfont icon-logout" title="out"></i>
+      </div>
     </header>
+  {% endblock %}
+
+  {% block nav %}
+    <nav class="m-nav">
+      <ul>
+        <li>
+          <a href="/home">Home</a>
+        </li>
+        <li>
+          <a href="/user">Users</a>
+        </li>
+        <li>
+          <a href="/todolist">Todo</a>
+        </li>
+        <li>
+          <a href="/ws">Socket</a>
+        </li>
+      </ul>
+    </nav>
   {% endblock %}
     
   {% block content %}
