@@ -18,25 +18,36 @@
 {% endblock %}
 
 {% block header %}
-<header class="header">
-  <div>
-    <h1>TODOLIST Page</h1>
-    <p>welcome ~, {{name}}</p>
-  </div>
-  <div class="socket">0</div>
-</header>
+{% endblock %}
+{% block nav %}
 {% endblock %}
 
 {% block content %}
-  <main class="main pad20">
-    <a href="#" class="btn primary todo_btn">LOGIN</a>
-    <hr class="hr">
+  <main class="m-login">
+    <section class="login">
+      <h3 class="title">NBA Playoff 2018</h3>
+      <form action="">
+
+        <label for="username">用户名:</label>
+        <input type="text" id="username">
+        <label for="password">密码:</label>
+        <input type="password" id="password">
+        <label for="cfpassword">确认密码:</label>
+        <input type="password" id="cfpassword">
+        <label for="email">邮箱:</label>
+        <input type="text" id="email">
+        <div>
+          <input type="checkbox" name="remeber" id="remember">
+          记住我
+          <a class="to-register">立即注册</a>
+        </div>
+        <a href="#" class="j-login btn success">login</a>
+      </form>
+    </section>
   </main>
 {% endblock %}
   
 {% block script %}
   {{ super() }}
   <script src="https://cdn.bootcss.com/jquery/3.3.0/jquery.min.js"></script>
-  <script src="https://cdn.bootcss.com/socket.io/1.7.4/socket.io.min.js"></script>
-  <script src="{{url_for('static', filename='js/todolist.js')}}"></script>
 {% endblock %}

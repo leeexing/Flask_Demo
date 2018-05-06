@@ -1,6 +1,14 @@
 $(() => {
   console.log(`%c Flask_Demo 首页 `, 'background:#ff85c0;color:#fff')
 
+  /** 
+   * 登陆注册
+  */
+  
+
+  /** 
+   * 上传用户头像
+  */
   let input_file = document.querySelector('#file')
   input_file.onchange = e => {
     console.log(e.target.files)

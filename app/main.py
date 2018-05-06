@@ -55,7 +55,7 @@ def bind_views(app):
     # def teardown_request(Exception=None):
     #     print('+='*10 + ' this runs after request ' + '+='*10)
 
-    app.register_blueprint(views.home_bp, url_prefix='/home')
+    app.register_blueprint(views.home_bp)
     app.register_blueprint(views.user_bp)
     app.register_blueprint(views.todolist_bp, url_prefix='/todolist')
 

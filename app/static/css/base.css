@@ -1,4 +1,9 @@
 @charset "UTF-8";
+html, body {
+  width: 100%;
+  height: 100%;
+}
+
 .hd, .header, .m-header {
   padding: 10px;
   background: #262626;
@@ -56,7 +61,86 @@
   color: #1890ff;
 }
 
-input {
+.m-nav ul li.active a {
+  color: #1890ff;
+}
+
+.m-login {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-image: url(/static/images/Nanjing2.jpg);
+  background-size: 100% 100%;
+}
+
+.m-login .login {
+  width: 500px;
+  padding: 15px;
+  margin: 150px auto 0;
+  border-radius: 5px;
+  background-color: rgba(255, 255, 255, 0.7);
+  box-shadow: 0 3px 20px #c5d0dd;
+}
+
+.m-login .login .title {
+  margin: 15px 0;
+  font-size: 16px;
+  text-align: center;
+}
+
+.m-login .login form {
+  display: flex;
+  flex-direction: column;
+  padding: 0 30px;
+}
+
+.m-login .login form label {
+  padding: 5px 0;
+  font-size: 14px;
+  color: #333;
+}
+
+.m-login .login form input {
+  margin-bottom: 10px;
+}
+
+.m-login .login form input[type=checkbox] {
+  margin-bottom: 0;
+  padding: 0;
+}
+
+.m-login .login form div {
+  margin-bottom: 10px;
+}
+
+.m-login .login form .to-register {
+  position: relative;
+  float: right;
+}
+
+.m-login .login form .to-register::after {
+  content: "";
+  display: inline-block;
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  height: 1px;
+  width: 100%;
+  transform: scale(0);
+  background-color: #f90;
+  transform-origin: center;
+  transition: all .3s;
+}
+
+.m-login .login form .to-register:hover {
+  color: #f90;
+}
+
+.m-login .login form .to-register:hover::after {
+  transform: scale(1);
+}
+
+input[type="text"], input[type="password"] {
   padding: 8px;
   border: 1px solid #1890ff;
   border-radius: 4px;
@@ -64,12 +148,16 @@ input {
   box-shadow: 0 0 2px #1890ff;
 }
 
-input:hover {
+input[type="text"]:hover, input[type="password"]:hover {
   border-color: #f90;
 }
 
-input:focus {
+input[type="text"]:focus, input[type="password"]:focus {
   box-shadow: 0 0 2px #fa8c16;
+}
+
+input[type="checkbox"] {
+  vertical-align: middle;
 }
 
 .code {
@@ -121,6 +209,7 @@ code.red {
   display: inline-block;
   padding: 8px 12px;
   border-radius: 4px;
+  text-align: center;
   color: #fff;
 }
 
@@ -140,7 +229,7 @@ code.red {
   background: #fa8c16;
 }
 
-/*
+/*🍖🍖🍖
 	< padding >
 */
 .pad10 {

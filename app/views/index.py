@@ -11,6 +11,10 @@ home_bp = Blueprint('home', __name__)
 def index():
     return render_template('home/index.html', name='Leeing')
 
+@home_bp.route('/login')
+def login():
+    return render_template('login/login.html', name='Leeing')
+
 @home_bp.route('/ws')
 def ws():
     return render_template('home/websocket.html', name='Socket')
