@@ -1,80 +1,54 @@
-console.groupCollapsed('你想知道什么')
-console.log('姓名：李星')
-console.log('职业：web前端工程师')
-console.log('爱好：篮球、户外、逛街')
-console.log('个人网站：http://www.leeeing.com/')
-console.groupEnd()
+$(() => {
+  console.log(`%c Flask_Demo 首页 `, 'background:#ff85c0;color:#fff')
 
+  /** 
+   * 登陆注册
+  */
+  
 
-/**
- * 
- * @param {*} files 
- */
-function upload(files) {
-  console.log(files)
-  let formData = new FormData()
-  let xhr = new XMLHttpRequest()
-  Array.from(files).forEach(file => {
-    formData.append('fileName', file)
-  })
-  return formData
-  // formData.set('fileName', files)
-  // xhr.open('POST', '/upload', true)
-  // xhr.onreadystatechange =function() {
-  //   if (xhr.readyState == 4 && xhr.status === 200) {
-  //     console.log(this.response)
-  //   }
-  // }
-  // xhr.onerror = e => {
-  //   console.error(e)
-  // }
-  // xhr.send(formData)
-}
-
-/**
- * 原生js封装请求
- * @param {*} url 
- * @param {*} method 
- * @param {*} data 
- */
-function query(url, method='get', data=null){
-  return new Promise((resolve, reject) => {
-    let xhr = new XMLHttpRequest()
-    xhr.open(method, url, true)
-    xhr.responseType = 'json'
-    xhr.onload = function() {
-      if (this.status === 200) {
-        resolve(this.response)
-      }
-    }
-    xhr.onerror = function(e) {
-      reject(e)
-    }
-    // post 请求的数据需要格式化，不能直接传递 object 对象
-    if (method !== 'get' && data) {
-      data = postDataFormat(data)
-      if (typeof FormData !== 'function') {
-        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
-        // xhr.setRequestHeader('Content-Type', 'application/json')
-      }
-    }
-    xhr.send(data)
-  })
-}
-
-function postDataFormat(obj) {
-  if (typeof FormData === 'function') {
+  /** 
+   * 上传用户头像
+  */
+  let input_file = document.querySelector('#file')
+  input_file.onchange = e => {
+    console.log(e.target.files)
+    let files = Array.from(e.target.files)
     let formData = new FormData()
-    Object.keys(obj).forEach(key => {
-      formData.append(key, obj[key])
-    })
-    return formData
-  } else {
-    let arr = []
-    Object.keys(obj).forEach(key => {
-      arr.push(`${encodeURIComponent(key)}=${encodeURIComponent(obj[key])}`)
-    })
-    return arr.join('&')
+    if (files) {
+      formData.set('avatar', files[0])
+    } else {
+      return false
+    }
+    // let fileData = upload(e.target.files)
+    setAvatar(formData)
   }
-}
 
+  let upload_btn = document.querySelector('.upload')
+  upload_btn.onclick = () => {
+    input_file.click()
+  }
+
+  function setAvatar(formData) {
+    console.log(formData)
+    console.log(formData.get('avatar'))
+    $.ajax({
+      url: 'http://localhost:5002/api/user/setavatar',
+      type: 'POST',
+      headers: {
+        Authorization: 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1MjQ4MDgzMjQsIm5iZiI6MTUyNDgwODMyNCwianRpIjoiZDAxODg1NTItMGJhMy00MjZjLWIzNjItOGU2MzY2YTFhMmU2IiwiZXhwIjoxNTI0ODk0NzI0LCJpZGVudGl0eSI6WzIsImxlZWluZyJdLCJmcmVzaCI6ZmFsc2UsInR5cGUiOiJhY2Nlc3MiLCJ1c2VyX2NsYWltcyI6Mn0._3ejXG5ft31qnwpVjXsIrs2FIhU0-7glRRASNdwEb-Y',
+      },
+      data: formData,
+      enctype: 'multipart/form-data',
+      // 告诉jQuery不要去处理发送的数据
+      processData : false, 
+      // 告诉jQuery不要去设置Content-Type请求头
+      contentType : false,
+      success(data) {
+        console.log(data)
+      },
+      error(err) {
+        console.log(err)
+      }
+    })
+  }
+})
